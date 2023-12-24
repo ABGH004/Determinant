@@ -1,5 +1,8 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cmath>
+#include <iomanip>
 const int MAXN = 105;
 double a[MAXN][MAXN];
 // Gauss-Jordan Elimination O(n^3)
@@ -89,23 +92,44 @@ void determinant_third_approach();
 
 int main()
 {
-	int n = 4;
-	double** matrix = new double*[4];
-	for( int i = 0; i < 4; ++i)
-		matrix[i] = new double[4];
-
-    matrix[0][0] = 1; matrix[0][1] = 0; matrix[0][2] = 2; matrix[0][3] = -1;
-    matrix[1][0] = 3; matrix[1][1] = 0; matrix[1][2] = 0; matrix[1][3] = 5;
-    matrix[2][0] = 2; matrix[2][1] = 1; matrix[2][2] = 4; matrix[2][3] = -3;
-    matrix[3][0] = 1; matrix[3][1] = 0; matrix[3][2] = 5; matrix[3][3] = 0;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
+	std::ifstream file("matrix.txt");
+	std::string row;
+	int length = -1;
+	while(file){
+		std::getline(file, row);
+		++length;
+	}
+	file.close();
+	file.open("matrix.txt");
+	double** matrix = new double*[length];
+	for( int i = 0; i < length; ++i )
+		matrix[i] = new double[length];
+	int i=0, j=0;
+	while(file && i < length){
+		
+		std::getline(file, row);
+	
+		std::stringstream ss(row);
+		std::string element;
+		
+		while(ss >> element && j < length){
+			
+			matrix[i][j] = stof(element);
+			++j;
+		}
+		j = 0;
+		++i;
+		
+	}
+	
+	for (int i = 0; i < length; i++) {
+		for (int j = 0; j < length; j++) {
 			a[i][j] = matrix[i][j];
 		}
 	}
-	double det1 = determinant_first_approach(n);
-	double det2 = determinant_second_approach(matrix, n);
+	double det1 = determinant_first_approach(length);
+	double det2 = determinant_second_approach(matrix, length);
+	std::cout << std::fixed << std::setprecision(2);
 	std::cout << "Determinant = " << det1 << " " << det2 << std::endl;
-
 	return 0;
 }
