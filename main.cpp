@@ -146,9 +146,10 @@ double determinant_third_approach(double** matrix, int size)
 	double det = determinant_third_approach(denominator, size-2);
 	
 	if(det == 0)
-		throw("UNDEFINED");
+		throw("UNDEFINED: ZERO DIVISION TRY OTHER APPROACHES);
 	
-	return ((numinator[0][0] * numinator[1][1]) - (numinator[0][1] * numinator[1][0]))/ det;
+	return ((numinator[0][0] * numinator[1][1])
+			- (numinator[0][1] * numinator[1][0]))/ det;
 }
 
 
@@ -185,7 +186,7 @@ void reader(double **&matrix, std::string fileName, int &length)
 			++j;
 		}
 		if( j != length )
-			throw("UNDEFINED");
+			throw("UNDEFINED: MATRIX IS NOT SQUARE");
 		j = 0;
 		++i;
 		
@@ -193,13 +194,14 @@ void reader(double **&matrix, std::string fileName, int &length)
 }
 int main()
 {
-	
+	std::string fileName;
+	std::getline(std::cin, fileName);
 	int length = -1;
 	double** matrix;
-	
+	fileName = "samples/" + fileName;
 	try
 	{
-		reader(matrix, "sample1.txt", length);
+		reader(matrix, fileName, length);
 	}
 	catch(const char * error)
 	{
@@ -228,7 +230,6 @@ int main()
 	{
 		std::cerr << error << std::endl;
 	}
-	
 	for(int i = 0; i < length; ++i)
 		delete [] matrix[i];
 	delete [] matrix;
